@@ -21,7 +21,7 @@ const queue = new LocalStorageQueue({
 queue.emit("hello", { world: true });
 
 // Register a listener
-queue.on("Hello", (data) => {
+queue.on("hello", (data) => {
   console.log(data);
 });
 
