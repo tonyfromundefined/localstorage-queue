@@ -4,13 +4,13 @@ const queue = new LocalStorageQueue({
   key: "something",
 });
 
-queue.on("hello2", (data) => {
+queue.on("hello", (data) => {
   console.log(data);
 });
 
-queue.start();
+queue.listen();
 
 setInterval(() => {
-  // queue.emit("hello", { world: true });
+  queue.emit("hello", { world: true });
   // queue.emit("hello2", { world: true });
 }, 500);

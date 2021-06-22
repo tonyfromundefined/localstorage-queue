@@ -1,6 +1,14 @@
 {
   "name": "localstorage-queue",
   "version": "0.1.0",
+  "repository": "https://github.com/tonyfromundefined/localstorage-queue",
+  "license": "MIT",
+  "author": "Tony <tony.w@hey.com>",
+  "files": [
+    "/lib"
+  ],
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "node -r node-localstorage/register ./test/index.js"

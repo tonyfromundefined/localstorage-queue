@@ -35,9 +35,9 @@ export class LocalStorageQueue {
       data,
     };
 
-    const prevState = this.getState();
+    const prevState = this.__getState();
 
-    this.setState({
+    this.__setState({
       ...prevState,
       queue: [...prevState.queue, queueItem],
     });
@@ -53,9 +53,18 @@ export class LocalStorageQueue {
     };
   }
 
-  start(interval: number = 100) {
+  listen(options?: { interval?: number }) {
+    const defaultOptions = {
+      interval: 500,
+    };
+
+    const { interval } = {
+      ...defaultOptions,
+      ...options,
+    };
+
     const i = setInterval(() => {
-      while (this.process());
+      while (this.__process());
     }, interval);
 
     return function clear() {
@@ -63,10 +72,10 @@ export class LocalStorageQueue {
     };
   }
 
-  private process() {
+  private __process() {
     let processed = false;
 
-    const state = this.getState();
+    const state = this.__getState();
 
     for (const key of Object.keys(this.__listeners)) {
       const queueItemIndex = state.queue.findIndex(
@@ -78,7 +87,7 @@ export class LocalStorageQueue {
 
         state.queue.splice(queueItemIndex, 1);
 
-        this.setState({
+        this.__setState({
           queue: state.queue,
         });
 
@@ -91,16 +100,16 @@ export class LocalStorageQueue {
     return processed;
   }
 
-  private getState(): z.infer<typeof SchemaState> {
+  private __getState(): z.infer<typeof SchemaState> {
     const item = localStorage.getItem(this.__key);
-    return item ? SchemaState.parse(JSON.parse(item)) : this.initialState();
+    return item ? SchemaState.parse(JSON.parse(item)) : this.__initialState();
   }
 
-  private setState(nextState: z.infer<typeof SchemaState>) {
+  private __setState(nextState: z.infer<typeof SchemaState>) {
     localStorage.setItem(this.__key, JSON.stringify(nextState));
   }
 
-  private initialState(): z.infer<typeof SchemaState> {
+  private __initialState(): z.infer<typeof SchemaState> {
     return {
       queue: [],
     };
