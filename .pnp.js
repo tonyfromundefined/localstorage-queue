@@ -37,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["node-localstorage", "npm:2.2.1"],
             ["prettier", "npm:2.3.1"],
             ["typescript", "patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"],
             ["zod", "npm:3.2.0"]
@@ -44,16 +45,45 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "SOFT",
         }]
       ]],
+      ["graceful-fs", [
+        ["npm:4.2.6", {
+          "packageLocation": "./.yarn/cache/graceful-fs-npm-4.2.6-535b2234f1-84d39c7756.zip/node_modules/graceful-fs/",
+          "packageDependencies": [
+            ["graceful-fs", "npm:4.2.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["imurmurhash", [
+        ["npm:0.1.4", {
+          "packageLocation": "./.yarn/cache/imurmurhash-npm-0.1.4-610c5068a0-34d414d789.zip/node_modules/imurmurhash/",
+          "packageDependencies": [
+            ["imurmurhash", "npm:0.1.4"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["localstorage-queue", [
         ["workspace:.", {
           "packageLocation": "./",
           "packageDependencies": [
             ["localstorage-queue", "workspace:."],
+            ["node-localstorage", "npm:2.2.1"],
             ["prettier", "npm:2.3.1"],
             ["typescript", "patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"],
             ["zod", "npm:3.2.0"]
           ],
           "linkType": "SOFT",
+        }]
+      ]],
+      ["node-localstorage", [
+        ["npm:2.2.1", {
+          "packageLocation": "./.yarn/cache/node-localstorage-npm-2.2.1-bc01536b9e-1c06486b63.zip/node_modules/node-localstorage/",
+          "packageDependencies": [
+            ["node-localstorage", "npm:2.2.1"],
+            ["write-file-atomic", "npm:1.3.4"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["prettier", [
@@ -65,11 +95,32 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["slide", [
+        ["npm:1.1.6", {
+          "packageLocation": "./.yarn/cache/slide-npm-1.1.6-14e4650dea-13cc5b7889.zip/node_modules/slide/",
+          "packageDependencies": [
+            ["slide", "npm:1.1.6"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["typescript", [
         ["patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b", {
           "packageLocation": "./.yarn/cache/typescript-patch-e441ed4208-c8766e84a4.zip/node_modules/typescript/",
           "packageDependencies": [
             ["typescript", "patch:typescript@npm%3A4.3.4#builtin<compat/typescript>::version=4.3.4&hash=ddfc1b"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["write-file-atomic", [
+        ["npm:1.3.4", {
+          "packageLocation": "./.yarn/cache/write-file-atomic-npm-1.3.4-485bffebbc-91e83d7e29.zip/node_modules/write-file-atomic/",
+          "packageDependencies": [
+            ["write-file-atomic", "npm:1.3.4"],
+            ["graceful-fs", "npm:4.2.6"],
+            ["imurmurhash", "npm:0.1.4"],
+            ["slide", "npm:1.1.6"]
           ],
           "linkType": "HARD",
         }]

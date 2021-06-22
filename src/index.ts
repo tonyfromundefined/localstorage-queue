@@ -2,8 +2,8 @@ import * as z from "zod";
 
 const SchemaQueueItem = z.object({
   eventName: z.string(),
+  issuedAt: z.string(),
   data: z.object({}).nonstrict().optional(),
-  _createdAt: z.string(),
 });
 
 const SchemaState = z.object({
@@ -13,11 +13,11 @@ const SchemaState = z.object({
 export class LocalStorageQueue {
   private __key: string;
   private __listeners: {
-    [eventName: string]: Array<(data?: object) => void>;
+    [eventName: string]: (data?: object) => void;
   } = {};
 
   constructor({ key }: { key: string }) {
-    if (typeof window === "undefined") {
+    if (typeof localStorage === "undefined") {
       throw new Error(
         "LocalStorageQueue does not support environments" +
           " other than browser environments."
@@ -27,10 +27,12 @@ export class LocalStorageQueue {
   }
 
   emit(eventName: string, data?: object) {
+    const issuedAt = new Date().toISOString();
+
     const queueItem = {
       eventName,
+      issuedAt,
       data,
-      _createdAt: new Date().toISOString(),
     };
 
     const prevState = this.getState();
@@ -44,15 +46,10 @@ export class LocalStorageQueue {
   on(eventName: string, listener: (data?: object) => void) {
     const self = this;
 
-    if (self.__listeners[eventName]) {
-      self.__listeners[eventName].push(listener);
-    } else {
-      self.__listeners[eventName] = [listener];
-    }
+    self.__listeners[eventName] = listener;
 
     return function dispose() {
-      const idx = self.__listeners[eventName].indexOf(listener);
-      self.__listeners[eventName].splice(idx, 1);
+      delete self.__listeners[eventName];
     };
   }
 
@@ -77,32 +74,30 @@ export class LocalStorageQueue {
       );
 
       if (queueItemIndex >= 0) {
-        processed = true;
-
         const item = state.queue[queueItemIndex];
 
-        for (const listener of this.__listeners[key]) {
-          listener(item.data);
-        }
+        state.queue.splice(queueItemIndex, 1);
+
+        this.setState({
+          queue: state.queue,
+        });
+
+        this.__listeners[key]?.(item.data);
+
+        processed = true;
       }
-
-      state.queue.splice(queueItemIndex, 1);
     }
-
-    this.setState({
-      queue: state.queue,
-    });
 
     return processed;
   }
 
   private getState(): z.infer<typeof SchemaState> {
-    const item = window.localStorage.getItem(this.__key);
-    return item ? SchemaState.parse(item) : this.initialState();
+    const item = localStorage.getItem(this.__key);
+    return item ? SchemaState.parse(JSON.parse(item)) : this.initialState();
   }
 
   private setState(nextState: z.infer<typeof SchemaState>) {
-    window.localStorage.setItem(this.__key, JSON.stringify(nextState));
+    localStorage.setItem(this.__key, JSON.stringify(nextState));
   }
 
   private initialState(): z.infer<typeof SchemaState> {
