@@ -10,6 +10,7 @@
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "scripts": {
+    "prebuild": "rimraf ./lib",
     "build": "tsc",
     "test": "node -r node-localstorage/register ./test/index.js"
   },
@@ -19,6 +20,7 @@
   "devDependencies": {
     "node-localstorage": "^2.2.1",
     "prettier": "^2.3.1",
+    "rimraf": "^3.0.2",
     "typescript": "^4.3.4"
   }
 }
